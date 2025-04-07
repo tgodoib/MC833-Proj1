@@ -10,4 +10,4 @@ add_executable(Projeto1 src/main.c src/sqlite3.c
         src/api.c
         include/api.h
         src/server.c
-        src/server.h)
+        include/server.h)

@@ -2,7 +2,7 @@
 // Created by Tiago Bannwart on 06/04/25.
 //
 
-#include "server.h"
+#include "../include/server.h"
 
 #include <stdio.h>
 #include <stdlib.h>
