@@ -41,10 +41,10 @@ int api_delete(sqlite3 *db, int movie_id);
 
 int api_list(sqlite3 *db, movie **list, int *movie_count);
 
-int api_listDetails(sqlite3 *db, movie_details **list, int *movie_count);
+int api_listDetails(sqlite3 *db, movie_details **list_out, int *movie_count);
 
 int api_details(sqlite3 *db, int movie_id, movie_details *details);
 
-int api_listByGenre(sqlite3 *db, char *genre, movie_details **list, int *movie_count);
+int api_listByGenre(sqlite3 *db, char *genre, movie_details **list_out, int *movie_count);
 
 #endif //API_H
