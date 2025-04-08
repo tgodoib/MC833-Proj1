@@ -35,16 +35,16 @@ sqlite3* db_connect();
 
 int api_new(sqlite3 *db, movie_details *m);
 
-int api_addGenre(sqlite3 *db, int id, char **genre);
+int api_addGenre(sqlite3 *db, int movie_id, char **genre, int genre_count);
 
-int api_delete(sqlite3 *db, int id);
+int api_delete(sqlite3 *db, int movie_id);
 
-int api_list(sqlite3 *db, movie *list);
+int api_list(sqlite3 *db, movie **list, int *movie_count);
 
-int api_listDetails(sqlite3 *db, movie_details *list);
+int api_listDetails(sqlite3 *db, movie_details **list, int *movie_count);
 
-int api_details(sqlite3 *db, int id, movie_details *details);
+int api_details(sqlite3 *db, int movie_id, movie_details *details);
 
-int api_listByGenre(sqlite3 *db, char *genre, movie_details *list);
+int api_listByGenre(sqlite3 *db, char *genre, movie_details **list, int *movie_count);
 
 #endif //API_H
