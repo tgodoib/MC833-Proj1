@@ -19,19 +19,6 @@
  * LIST_BY_GENRE <GENRE>
  **/
 
-sqlite3 *db_connect() {
-    sqlite3 *db;
-    const int res = sqlite3_open("../db.sqlite", &db);
-
-    if (res != SQLITE_OK) {
-        printf("Error opening database : %d\n", res);
-        exit(1);
-    }
-
-    // sqlite3_close(db);
-    return db;
-}
-
 int api_new(sqlite3 *db, movie_details *m) {
     int res;
     char buffer[1024];

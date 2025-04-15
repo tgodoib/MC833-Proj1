@@ -20,6 +20,8 @@ typedef struct movie {
     movie_details *details;
 } movie;
 
+// NEW teste;hmm,gay;tgb;1990;
+
 /**
  * NEW <TITLE>;<GENRE,GENRE,...>;DIRECTOR;YEAR;
  * ADD_GENRE <ID>;<GENRE,GENRE,...>;
@@ -31,7 +33,7 @@ typedef struct movie {
  * LIST_BY_GENRE <GENRE>
  **/
 
-sqlite3* db_connect();
+
 
 int api_new(sqlite3 *db, movie_details *m);
 
@@ -46,5 +48,6 @@ int api_listDetails(sqlite3 *db, movie_details **list_out, int *movie_count);
 int api_details(sqlite3 *db, int movie_id, movie_details *details);
 
 int api_listByGenre(sqlite3 *db, char *genre, movie_details **list_out, int *movie_count);
+
 
 #endif //API_H

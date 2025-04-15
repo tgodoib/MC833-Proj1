@@ -4,10 +4,13 @@
 
 #ifndef SERVER_H
 #define SERVER_H
+#include <sqlite3.h>
 
 char* readInput(int client_fd);
 
-void parseInput(char *input);
+void parseInput(sqlite3 *db, int client_fd, const char *input);
+
+sqlite3* db_connect();
 
 void createServer();
 
