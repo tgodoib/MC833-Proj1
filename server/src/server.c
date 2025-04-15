@@ -39,7 +39,6 @@ char *readInput(int client_fd) {
     }
     data[total_size] = '\0';
 
-    printf("finished reading input");
     return data;
 }
 
@@ -269,7 +268,6 @@ void parseInput(sqlite3 *db, int client_fd, const char *input) {
     free(command);
     shutdown(client_fd, SHUT_RDWR);
     close(client_fd);
-    printf("Closed fd");
 }
 
 sqlite3 *db_connect() {
