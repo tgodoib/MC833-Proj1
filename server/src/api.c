@@ -181,7 +181,7 @@ int api_list(sqlite3 *db, movie **list_out, int *movie_count) {
 
     sqlite3_prepare_v2(db, "SELECT id, title FROM movies;", -1, &stmt, nullptr);
 
-    while ((res = sqlite3_step(stmt)) >= SQLITE_ROW) {
+    while ((res = sqlite3_step(stmt)) == SQLITE_ROW) {
         list = realloc(list, (count + 1) * sizeof(movie));
 
         list[count].id = sqlite3_column_int(stmt, 0);
@@ -224,7 +224,7 @@ int api_listDetails(sqlite3 *db, movie_details **list_out, int *movie_count) {
         -1, &stmt, nullptr
     );
 
-    while ((res = sqlite3_step(stmt)) >= SQLITE_ROW) {
+    while ((res = sqlite3_step(stmt)) == SQLITE_ROW) {
         int id = sqlite3_column_int(stmt, 0);
 
         if (id != current_movie_id) {
@@ -301,7 +301,7 @@ int api_details(sqlite3 *db, int movie_id, movie_details *details) {
 
     int first = 1;
 
-    while ((res = sqlite3_step(stmt)) >= SQLITE_ROW) {
+    while ((res = sqlite3_step(stmt)) == SQLITE_ROW) {
         if (first) {
             details->title = strdup((const char *) sqlite3_column_text(stmt, 0));
             details->director = strdup((const char *) sqlite3_column_text(stmt, 1));
@@ -357,7 +357,7 @@ int api_listByGenre(sqlite3 *db, char *genre, movie_details **list_out, int *mov
 
     sqlite3_prepare_v2(db, buffer, -1, &stmt, nullptr);
 
-    while ((res = sqlite3_step(stmt)) >= SQLITE_ROW) {
+    while ((res = sqlite3_step(stmt)) == SQLITE_ROW) {
         int id = sqlite3_column_int(stmt, 0);
 
         if (id != current_movie_id) {
