@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    sendCmd("0.0.0.0", 9833, joined);
+    sendCmd("65.21.179.185", 9833, joined);
 
     free(joined);
     return 0;
