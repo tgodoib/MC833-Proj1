@@ -6,9 +6,15 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 
-#define IP "127.0.0.1"
+#define IP "65.21.179.185"
 #define PORT 9833
 
+/**
+ * abre uma conexão TCP com o servidor no IP e porta especificados e envia uma mensagem.
+ * - imprime a resposta recebida.
+ * - encerra o socket após o uso.
+ * se falhar em qualquer etapa, encerra o programa com erro.
+ */
 void sendCmd(const char *ip, int port, const char *msg) {
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
@@ -46,6 +52,10 @@ void sendCmd(const char *ip, int port, const char *msg) {
     close(sock);
 }
 
+/**
+ * - junta todos os argumentos da linha de comando em uma única string separada por espaço.
+ * - chama `sendCmd` pra enviar a string pro servidor.
+ */
 
 int main(int argc, char **argv) {
     int total_len = 0;
@@ -61,7 +71,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    sendCmd("65.21.179.185", 9833, joined);
+    sendCmd(IP, PORT, joined);
 
     free(joined);
     return 0;
