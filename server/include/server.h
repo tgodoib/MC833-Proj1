@@ -1,7 +1,3 @@
-//
-// Created by Tiago Bannwart on 06/04/25.
-//
-
 #ifndef SERVER_H
 #define SERVER_H
 #include <sqlite3.h>
