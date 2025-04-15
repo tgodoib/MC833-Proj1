@@ -39,6 +39,7 @@ char *readInput(int client_fd) {
     }
     data[total_size] = '\0';
 
+    printf("finished reading input");
     return data;
 }
 
@@ -59,7 +60,6 @@ void parseInput(sqlite3 *db, int client_fd, const char *input) {
     action[strcspn(action, "\r\n")] = '\0';
 
     printf("%s\n", action);
-    printf("%d\n", strcmp(action, "LIST"));
 
     if (strcmp(action, "NEW") == 0) {
         movie_details m;
@@ -267,6 +267,9 @@ void parseInput(sqlite3 *db, int client_fd, const char *input) {
     }
 
     free(command);
+    shutdown(client_fd, SHUT_RDWR);
+    close(client_fd);
+    printf("Closed fd");
 }
 
 sqlite3 *db_connect() {
@@ -315,6 +318,7 @@ void createServer() {
             parseInput(db, client_fd, req);
             free(req);
 
+            close(client_fd);
             exit(0);
         }
         close(client_fd);

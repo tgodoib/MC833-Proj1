@@ -4,7 +4,7 @@ project(Projeto1 C)
 set(CMAKE_C_STANDARD 23)
 
 
-include_directories(./include)
+include_directories(include)
 
 add_executable(Projeto1 src/main.c
         src/sqlite3.c
