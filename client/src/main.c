@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
             }
         }
 
-        sendCmd("65.21.179.185", 9833, joined);
+        sendCmd(IP, PORT, joined);
 
         free(joined);
     }
