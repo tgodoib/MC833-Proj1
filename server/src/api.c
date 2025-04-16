@@ -1,7 +1,3 @@
-//
-// Created by Tiago Bannwart on 06/04/25.
-//
-
 #include "api.h"
 
 #include <stdio.h>
@@ -19,6 +15,13 @@
  * LIST_BY_GENRE <GENRE>
  **/
 
+/**
+ * cria um novo filme no banco, incluindo seus gêneros, e faz os relacionamentos entre eles.
+ * - insere o filme na tabela movies e recupera o id gerado.
+ * - insere os gêneros (evita duplicatas) e recupera os ids.
+ * - cria relações na tabela movies_genres.
+ * retorna 0 em caso de sucesso, 1 em erro.
+ */
 int api_new(sqlite3 *db, movie_details *m) {
     int res;
     char buffer[1024];
@@ -93,6 +96,12 @@ fail:
     return 1;
 }
 
+/**
+ * adiciona novos gêneros a um filme já existente.
+ * - insere os gêneros (evita duplicatas) e recupera os ids.
+ * - cria relações na tabela movies_genres (evita duplicatas).
+ * retorna 0 em caso de sucesso, 1 em erro.
+ */
 int api_addGenre(sqlite3 *db, int movie_id, char **genre, int genre_count) {
     int res;
     char buffer[1024];
@@ -153,6 +162,11 @@ fail:
     return 1;
 }
 
+/**
+ * remove um filme da tabela movies com base no id.
+ * as relações em movies_genres são automaticamente apagadas se usar foreign keys ON DELETE CASCADE.
+ * retorna 0 em caso de sucesso, 1 em erro.
+ */
 int api_delete(sqlite3 *db, int movie_id) {
     int res;
     char buffer[1024];
@@ -174,6 +188,11 @@ int api_delete(sqlite3 *db, int movie_id) {
     return 0;
 }
 
+/**
+ * lista os filmes com apenas id e título.
+ * aloca dinamicamente um array de `movie` e define o ponteiro e o count.
+ * retorna 0 em caso de sucesso, 1 em erro.
+ */
 int api_list(sqlite3 *db, movie **list_out, int *movie_count) {
     int res, count = 0;
     sqlite3_stmt *stmt;
@@ -209,6 +228,12 @@ int api_list(sqlite3 *db, movie **list_out, int *movie_count) {
     return 0;
 }
 
+/**
+ * lista todos os filmes com detalhes (título, diretor, ano, gêneros).
+ * agrega os gêneros de forma manual com múltiplas linhas por filme.
+ * aloca dinamicamente um array de `movie_details` e define o ponteiro e o count.
+ * retorna 0 em caso de sucesso, 1 em erro.
+ */
 int api_listDetails(sqlite3 *db, movie_details **list_out, int *movie_count) {
     int res, count = 0, current_movie_id = -1;
     sqlite3_stmt *stmt;
@@ -272,6 +297,12 @@ int api_listDetails(sqlite3 *db, movie_details **list_out, int *movie_count) {
     return 0;
 }
 
+/**
+ * retorna os detalhes completos de um filme específico, incluindo os gêneros.
+ * popula a struct passada por ponteiro.
+ * assume que `details` foi alocada, mas não seus campos internos.
+ * retorna 0 em caso de sucesso, 1 em erro.
+ */
 int api_details(sqlite3 *db, int movie_id, movie_details *details) {
     char buffer[1024];
     int res;
@@ -333,6 +364,12 @@ int api_details(sqlite3 *db, int movie_id, movie_details *details) {
     return 0;
 }
 
+/**
+ * lista todos os filmes que possuem um certo gênero.
+ * inclui todos os gêneros de cada filme, mesmo que não seja o procurado.
+ * aloca dinamicamente um array de `movie_details` e define o ponteiro e o count.
+ * retorna 0 em caso de sucesso, 1 em erro.
+ */
 int api_listByGenre(sqlite3 *db, char *genre, movie_details **list_out, int *movie_count) {
     char buffer[1024];
     int res, count = 0, current_movie_id = -1;

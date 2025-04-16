@@ -1,7 +1,3 @@
-//
-// Created by Tiago Bannwart on 06/04/25.
-//
-
 #ifndef API_H
 #define API_H
 

@@ -1,7 +1,3 @@
-//
-// Created by Tiago Bannwart on 06/04/25.
-//
-
 #include "../include/server.h"
 
 #include <stdio.h>
@@ -14,6 +10,10 @@
 
 #include "api.h"
 
+/**
+ * lê a entrada vinda do socket `client_fd`, armazenando dinamicamente toda a mensagem recebida.
+ * - retorna um ponteiro alocado com a mensagem completa (precisa de free).
+ */
 char *readInput(int client_fd) {
     constexpr int READ_BUFFER_SIZE = 1024;
 
@@ -43,16 +43,10 @@ char *readInput(int client_fd) {
 }
 
 /**
- * NEW <TITLE>;<GENRE,GENRE,...>;DIRECTOR;YEAR;
- * ADD_GENRE <ID>;<GENRE,GENRE,...>;
- * DELETE <ID>;
- *
- * LIST
- * LIST_DETAILS
- * DETAILS <ID>;
- * LIST_BY_GENRE <GENRE>;
- **/
-
+ * interpreta o comando enviado por `client_fd` e chama a função da API correspondente.
+ * - escreve mensagens de erro e saída no socket.
+ * - libera recursos no final (e fecha o socket).
+ */
 void parseInput(sqlite3 *db, int client_fd, const char *input) {
     char *command = strdup(input);
     char *action = strtok(command, " ");
@@ -270,6 +264,11 @@ void parseInput(sqlite3 *db, int client_fd, const char *input) {
     close(client_fd);
 }
 
+/**
+ * abre uma conexão com o banco de dados sqlite localizado em "../db.sqlite".
+ * se falhar, encerra o programa com erro.
+ * retorna o ponteiro `sqlite3*` da conexão.
+ */
 sqlite3 *db_connect() {
     sqlite3 *db;
     const int res = sqlite3_open("../db.sqlite", &db);
@@ -282,7 +281,12 @@ sqlite3 *db_connect() {
     return db;
 }
 
-
+/**
+ * cria o socket de servidor TCP na porta 9833 e começa a aceitar conexões.
+ * - para cada conexão, faz fork e trata de forma isolada.
+ * - cada filho lê o input, processa o comando e responde.
+ * - reaproveita o db aberto (não fecha no final).
+ */
 void createServer() {
     sqlite3 *db = db_connect();
     const int server_fd = socket(AF_INET, SOCK_STREAM, 0);
