@@ -20,7 +20,7 @@ typedef struct movie {
     movie_details *details;
 } movie;
 
-// NEW teste;hmm,gay;tgb;1990;
+// NEW Up;Animacao,Familia,Comedia;Pete Docter;2009
 
 /**
  * NEW <TITLE>;<GENRE,GENRE,...>;DIRECTOR;YEAR;

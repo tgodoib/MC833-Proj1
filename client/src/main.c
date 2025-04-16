@@ -48,21 +48,35 @@ void sendCmd(const char *ip, int port, const char *msg) {
 
 
 int main(int argc, char **argv) {
-    int total_len = 0;
+    if (argc > 1) {
+        int total_len = 0;
+        for (int i = 1; i < argc; i++) total_len += strlen(argv[i]) + 1;
+        char *joined = malloc(total_len);
+        joined[0] = '\0';
 
-    for (int i = 1; i < argc; i++) total_len += strlen(argv[i]) + 1;
-    char *joined = malloc(total_len);
-    joined[0] = '\0';
-
-    for (int i = 1; i < argc; i++) {
-        strcat(joined, argv[i]);
-        if (i < argc - 1) {
-            strcat(joined, " ");
+        for (int i = 1; i < argc; i++) {
+            strcat(joined, argv[i]);
+            if (i < argc - 1) {
+                strcat(joined, " ");
+            }
         }
+
+        sendCmd("65.21.179.185", 9833, joined);
+
+        free(joined);
     }
-
-    sendCmd("65.21.179.185", 9833, joined);
-
-    free(joined);
+    else {
+        printf("No command.\n");
+        printf("Usage: ./main <command>\n");
+        printf("Commands:\n");
+        printf("NEW <TITLE>;<GENRE,GENRE,...>;DIRECTOR;YEAR;\n");
+        printf("ADD_GENRE <ID>;<GENRE,GENRE,...>;\n");
+        printf("DELETE <ID>;\n");
+        printf("LIST;\n");
+        printf("LIST_DETAILS;\n");
+        printf("DETAILS <ID>;\n");
+        printf("LIST_BY_GENRE <GENRE>;\n");
+        printf("Example: ./main NEW \"Up;Animacao,Familia,Comedia;Pete Docter;2009;\"\n");
+    }
     return 0;
 }
